@@ -31,6 +31,13 @@ public class NumBoard extends Group
 	public void bindCells(NumBlockEntity[][] cells) 
 	{
 		this._cells = cells;
+		for (int row = 0; row < _rowCount; row++) 
+		{
+			for (int col = 0; col < _colCount; col++) 
+			{
+				_blocks[row][col].Entity = _cells[row][col];
+			}
+		}
 	}
 
 	public NumBoard(Vector2 pos, int colCount, int rowCount, float blockWidth, float blockHeight)
@@ -46,28 +53,28 @@ public class NumBoard extends Group
 	
 	private void onDraw()
 	{
-		NumBlockBase blockActor;
-		NumBlockEntity blockEntity;
-		for (int row = 0; row < _rowCount; row++) 
-		{
-			for (int col = 0; col < _colCount; col++) 
-			{
-				blockActor = _blocks[row][col]; 
-				blockEntity = _cells[row][col];
-				
-				//Set display number
-				blockActor.Number = blockEntity.Number;
-				blockActor.BgNumber = blockEntity.BgNumber;
-				
-				//Set tint color by status 
-				if(blockEntity.IsLocked)
-					blockActor.setColor(Color.RED);
-				else if(blockEntity.IsSolved)
-					blockActor.setColor(Color.GRAY);
-				else
-					blockActor.setColor(Color.WHITE);
-			}
-		}
+//		NumBlockBase blockActor;
+//		NumBlockEntity blockEntity;
+//		for (int row = 0; row < _rowCount; row++) 
+//		{
+//			for (int col = 0; col < _colCount; col++) 
+//			{
+//				blockActor = _blocks[row][col]; 
+//				blockEntity = _cells[row][col];
+//				
+//				//Set display number
+//				blockActor.Number = blockEntity.Number;
+//				blockActor.BgNumber = blockEntity.BgNumber;
+//				
+//				//Set tint color by status 
+//				if(blockEntity.IsLocked)
+//					blockActor.setColor(Color.RED);
+//				else if(blockEntity.IsSolved)
+//					blockActor.setColor(Color.GRAY);
+//				else
+//					blockActor.setColor(Color.WHITE);
+//			}
+//		}
 	}
 	
 	public NumBlockBase getBlock(int row, int col) {
@@ -102,7 +109,7 @@ public class NumBoard extends Group
 			for (int col = 0; col < _colCount; col++) 
 			{
 				num = row * _colCount + (col+1);
-				_blocks[row][col] = new NumBlock(num, 
+				_blocks[row][col] = new NumBlockV2(num, 
 												row,
 												col,
 												_position.x + col*(_blockHeight+_horizontalMargin), 

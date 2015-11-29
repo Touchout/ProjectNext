@@ -7,4 +7,5 @@ public class NumBlockEntity
 	public boolean IsLocked = false;
 	public boolean IsOnSolve = false;
 	public boolean IsSolved = false;
+	public boolean IsOnHover = false;
 }

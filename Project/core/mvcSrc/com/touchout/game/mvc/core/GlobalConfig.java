@@ -24,7 +24,7 @@ public class GlobalConfig
 	
 	public static final float BLOCK_MARGIN = 20;
 	
-	public static final int DEFUALT_GAME_TIME = 31;
+	public static final int DEFUALT_GAME_TIME = 30;
 	
 	public static final float TIMER_VPOSITION = 1000;
 	

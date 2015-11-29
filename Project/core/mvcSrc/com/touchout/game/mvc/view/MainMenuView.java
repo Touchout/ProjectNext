@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Logger;
+import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.touchout.game.mvc.controller.MainMenuController;
@@ -48,7 +49,8 @@ public class MainMenuView
 		initializeActors();
 		
 		//Set Stage
-		_bgStage = new Stage(new StretchViewport(GlobalConfig.FRUSTUM_WIDTH, GlobalConfig.FRUSTUM_HEIGHT), _game.batch);
+		//_bgStage = new Stage(new StretchViewport(GlobalConfig.FRUSTUM_WIDTH, GlobalConfig.FRUSTUM_HEIGHT), _game.batch);
+		_bgStage = new Stage(new FillViewport(GlobalConfig.FRUSTUM_WIDTH, GlobalConfig.FRUSTUM_HEIGHT), _game.batch);
 		_bgStage.addActor(_background);
 		
 		_mainStage = new Stage(new FitViewport(GlobalConfig.FRUSTUM_WIDTH, GlobalConfig.FRUSTUM_HEIGHT), _game.batch);
@@ -165,7 +167,9 @@ public class MainMenuView
 //		_game.batch.draw(Assets.mainBackgroundTexture,0,0);
 //		_game.batch.end();
 		
+		_bgStage.getViewport().apply();
 		_bgStage.draw();
+		_mainStage.getViewport().apply();
 		_mainStage.draw();
 		
 	}

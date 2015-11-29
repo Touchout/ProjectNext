@@ -21,6 +21,7 @@ public class Assets
 	public static Logger globalLogger;
 	public static TextureRegion[] NumBlockTextures;
 	public static TextureRegion[] NumBlockBackgroundTextures;
+	public static TextureRegion[] NumBlockBackgroundDarkTextures;
 	public static TextureRegion mainBackgroundTexture;
 	public static TextureRegion DarkButtonTexture;
 	public static TextureRegion LightButtonTexture;
@@ -75,15 +76,17 @@ public class Assets
 		
 		NumBlockTextures = new TextureRegion[17];
 		NumBlockBackgroundTextures = new TextureRegion[5];
+		NumBlockBackgroundDarkTextures = new TextureRegion[5];
 		
 		for (int i = 1; i <= 16; i++) 
 		{
-			NumBlockTextures[i] = LoadTexture(String.format("data/num_block_%02d.png", i));
+			NumBlockTextures[i] = LoadTexture(String.format("data/num_block_%02d.png", i));			
 		}
 		
 		for (int i = 0; i < 5; i++) 
 		{
 			NumBlockBackgroundTextures[i] = LoadTexture(String.format("blocks/blockBg_%d.png", i));
+			NumBlockBackgroundDarkTextures[i] = LoadTexture(String.format("blocks/blockBg_dark_%d.png", i));
 		}
 		
 		//Load Audio
@@ -162,8 +165,8 @@ public class Assets
 		parameter.characters = "0123456789";
 		FinalScoreFont = fontGenerator.generateFont(parameter);
 		FinalScoreFont.setColor(COLOR_ORAGE);
-		parameter.size = 60;
-		parameter.characters = "+2";
+		parameter.size = 30;
+		parameter.characters = "+2 SECONDS";
 		TimePlusFont = fontGenerator.generateFont(parameter);
 		TimePlusFont.setColor(COLOR_ORAGE);
 		

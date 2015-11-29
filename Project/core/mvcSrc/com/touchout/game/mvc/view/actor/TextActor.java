@@ -33,6 +33,7 @@ public class TextActor extends Actor
 	
 	public void recalculate()
 	{
+		layout.setText(_font, _text);
 		setBounds(this.getX(), this.getY(),  layout.width,  layout.height);
 	}
 	

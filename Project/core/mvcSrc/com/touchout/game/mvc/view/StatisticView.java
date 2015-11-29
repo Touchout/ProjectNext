@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Logger;
+import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.touchout.game.mvc.controller.ArcadeGameController;
@@ -41,6 +42,7 @@ public class StatisticView  implements IView
 
 	//Stages
 	Stage _mainStage;	
+	Stage _bgStage;
 	
 	TextureRegionActor _background;
 	TextureRegionActor _logo;
@@ -60,9 +62,13 @@ public class StatisticView  implements IView
 		initializeActors();
 		
 		//Set Stage
-		_mainStage = new Stage(new StretchViewport(GlobalConfig.FRUSTUM_WIDTH, GlobalConfig.FRUSTUM_HEIGHT), _game.batch);
+		_bgStage = new Stage(new FillViewport(GlobalConfig.FRUSTUM_WIDTH, GlobalConfig.FRUSTUM_HEIGHT), _game.batch);
+		_bgStage.addActor(_background);
+		
+		//_mainStage = new Stage(new StretchViewport(GlobalConfig.FRUSTUM_WIDTH, GlobalConfig.FRUSTUM_HEIGHT), _game.batch);
+		_mainStage = new Stage(new FitViewport(GlobalConfig.FRUSTUM_WIDTH, GlobalConfig.FRUSTUM_HEIGHT), _game.batch);
 		//_mainStage.addActor(_title);
-		_mainStage.addActor(_background);
+		//_mainStage.addActor(_background);
 		_mainStage.addActor(_startButton);
 		_mainStage.addActor(_highScoreButton);
 		_mainStage.addActor(_layout);
@@ -127,6 +133,7 @@ public class StatisticView  implements IView
 	public void resize(int width, int height) 
 	{
 		_mainStage.getViewport().update(width, height);
+		_bgStage.getViewport().update(width, height);
 	}
 	
 	public void update()
@@ -144,6 +151,9 @@ public class StatisticView  implements IView
 //		_game.batch.begin();
 //		_game.batch.draw(Assets.mainBackgroundTexture,0,0);
 //		_game.batch.end();
+		_bgStage.getViewport().apply();
+		_bgStage.draw();
+		_mainStage.getViewport().apply();
 		_mainStage.draw();
 	}
 }

@@ -79,7 +79,7 @@ public class ArcadeGameModel
 		_state = GameState.Playing;
 	}
 	
-	public void touchBlock(int row, int col) 
+	public void touchBlockUp(int row, int col) 
 	{
 		//Press on correct block
 		if(_boardEntity.getCells()[row][col].Number == _targetNumber)
@@ -117,6 +117,13 @@ public class ArcadeGameModel
 			_metadata.resetLevel();
 			_boardEntity.lock();
 		}
+		
+		_boardEntity.touchBlockUp(row, col);
+	}
+	
+	public void touchBlockDown(int row, int col) 
+	{
+		_boardEntity.touchBlockDown(row, col);
 	}
 	
 	//******************** Getters & Setters  ********************//

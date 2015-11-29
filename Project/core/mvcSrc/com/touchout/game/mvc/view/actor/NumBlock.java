@@ -13,24 +13,19 @@ import com.touchout.game.mvc.core.Assets;
 
 public class NumBlock extends NumBlockBase
 {
-	public int Number;
-	public int BgNumber;
-	public int Row;
-	public int Col;
-	BitmapFont _font = Assets.BlockFont;
-
 	public NumBlock(Integer number, int row, int col, float x, float y, float width, float height)
 	{
 		super(number, row, col, x, y, width, height);
-//		Number = number;
-//		BgNumber = 0;
-//		Row = row;
-//		Col = col;
-//		setBounds(x, y, width, height);
 	}
 	
 	@Override
 	public void performClick()
+	{
+		bounce();
+	}
+	
+	@Override
+	public void performHint()
 	{
 		bounce();
 	}

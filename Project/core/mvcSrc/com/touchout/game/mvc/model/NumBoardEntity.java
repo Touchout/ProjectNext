@@ -55,7 +55,17 @@ public class NumBoardEntity
 	public void solveBlock(int row, int col) 
 	{
 		_cells[row][col].IsSolved = true;
-		_cells[row][col].BgNumber = 4;		
+		_cells[row][col].BgNumber = 4;
+	}
+	
+	public void touchBlockDown(int row, int col) 
+	{		
+		_cells[row][col].IsOnHover = true;
+	}
+	
+	public void touchBlockUp(int row, int col) 
+	{		
+		_cells[row][col].IsOnHover = false;
 	}
 	
 	public void renew()

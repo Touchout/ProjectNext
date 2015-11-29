@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.Logger;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.sun.prism.GraphicsPipeline.ShaderType;
 import com.touchout.game.mvc.controller.ArcadeGameController;
 import com.touchout.game.mvc.core.Assets;
 import com.touchout.game.mvc.core.GlobalConfig;
@@ -120,13 +121,15 @@ public class ArcadeGameView implements IView
 		
 		//TimerNew
 		_timeBanner = new TimeBannerActor();
+		_timeBanner.setScale(2);
 		_timeBanner.setPosition((GlobalConfig.FRUSTUM_WIDTH - _timeBanner.getWidth())/2, 
 				GlobalConfig.FRUSTUM_HEIGHT - _timeBanner.getHeight());
-		_timeBanner.setScale(2);
 		_timeBanner.relayout();
 		
-		_plus = new TextActor(Assets.TimePlusFont, "+2", _timeBanner.getRight() + 80, _timeBanner.getOriginY()-30);
-		_plus.setVisible(false);
+		_plus = new TextActor(Assets.TimePlusFont, "+2 SECONDS", _timeBanner.getRight() , _timeBanner.getY());
+		_plus.setY(_plus.getY() - _plus.getHeight() - 5);
+		//_plus.setVisible(false);
+		_plus.setVisible(true);
 		
 		//ScoreBanner
 		_scoreBanner = new ScoreBanner();
@@ -197,6 +200,21 @@ public class ArcadeGameView implements IView
 		_board.addListener(new InputListener()
 		{
 			@Override
+			public void touchUp(InputEvent event, float screenX, float screenY,int pointer, int button) 
+			{
+				Vector2 touchPos = new Vector2();
+				touchPos.set(screenX, screenY);
+				_board.localToStageCoordinates(touchPos);
+				logger.debug(touchPos.x + "," + touchPos.y);
+				
+				NumBlockBase touchedBlock;
+				if((touchedBlock = (NumBlockBase) _board.hit(touchPos.x, touchPos.y, false)) != null)
+				{
+					_controller.touchBlockUp(touchedBlock.Row, touchedBlock.Col);
+				}
+			}
+			
+			@Override
 			public boolean touchDown(InputEvent event, float screenX, float screenY,int pointer, int button) 
 			{
 				Vector2 touchPos = new Vector2();
@@ -207,7 +225,7 @@ public class ArcadeGameView implements IView
 				NumBlockBase touchedBlock;
 				if((touchedBlock = (NumBlockBase) _board.hit(touchPos.x, touchPos.y, false)) != null)
 				{
-					_controller.touchBlock(touchedBlock.Row, touchedBlock.Col);
+					_controller.touchBlockDown(touchedBlock.Row, touchedBlock.Col);
 				}
 				
 				return true;
@@ -240,13 +258,13 @@ public class ArcadeGameView implements IView
 		_model.getBoardUnlockEvent().addTEventHandler(new IGameEventHandler() {
 			@Override
 			public void handle(GameEventArg event) {
-				_board.getBlock((Integer)(event.Tag)).performClick();
+				_board.getBlock((Integer)(event.Tag)).performHint();
 			}});
 		
 		_model.getMetadata().timePlusEvent.addTEventHandler(new IGameEventHandler() {			
 			@Override
 			public void handle(GameEventArg event) {
-				_plus.addAction(Actions.sequence(Actions.visible(true), Actions.delay(0.5f),Actions.visible(false)));
+				//_plus.addAction(Actions.sequence(Actions.visible(true), Actions.delay(0.5f),Actions.visible(false)));
 			}
 		});
 	}
@@ -291,7 +309,17 @@ public class ArcadeGameView implements IView
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);		
 				
 		//Draw gaming component (board...etc)
-		//_camera.update();
+		//_camera.update();	
+		ShapeRenderer sr = new ShapeRenderer();
+		sr.setProjectionMatrix(_gameStage.getCamera().combined);
+		sr.setAutoShapeType(true);
+		sr.begin();
+		_timeBanner.setDebug(true);
+		_timeBanner.drawDebug(sr);
+		sr.set(ShapeType.Line);
+		sr.setColor(Color.BLACK);
+		sr.line(0, _timeBanner.getY(), 1080, _timeBanner.getY());	
+		sr.end();
 		_gameStage.draw();
 		_gameStage.act();
 		

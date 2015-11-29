@@ -10,9 +10,11 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.touchout.game.mvc.core.Assets;
+import com.touchout.game.mvc.model.NumBlockEntity;
 
 public abstract class NumBlockBase extends Actor 
 {
+	public NumBlockEntity Entity;
 	public int Number;
 	public int BgNumber;
 	public int Row;
@@ -30,7 +32,9 @@ public abstract class NumBlockBase extends Actor
 	
 	public abstract void performClick();
 	
-	private Vector2 getNumberCoord() 
+	public abstract void performHint();
+	
+	protected Vector2 getNumberCoord() 
 	{
 		GlyphLayout layout = new GlyphLayout();
 		layout.setText(_font, String.valueOf(this.Number));
@@ -41,9 +45,26 @@ public abstract class NumBlockBase extends Actor
 		return new Vector2(this.getX() + paddingX, this.getY() + paddingY);
 	}
 	
+	protected void onDraw()
+	{
+		//Set display number
+		Number = Entity.Number;
+		BgNumber = Entity.BgNumber;
+		
+		//Set tint color by status 
+		if(Entity.IsLocked)
+			setColor(Color.RED);
+		else if(Entity.IsSolved)
+			setColor(Color.GRAY);
+		else
+			setColor(Color.WHITE);
+	}
+	
 	@Override
 	public void draw(Batch batch, float parentAlpha) 
 	{
+		this.onDraw();
+		
 		if(this.getColor() != Color.WHITE)
 			batch.setColor(this.getColor());
 		

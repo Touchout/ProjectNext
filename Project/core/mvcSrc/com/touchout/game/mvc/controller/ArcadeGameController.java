@@ -49,10 +49,16 @@ public class ArcadeGameController
 		_game.backToMainMenu();
 	}
 	
-	public void touchBlock(int row, int col) 
+	public void touchBlockUp(int row, int col) 
 	{
 		if(_model.getState() == GameState.Playing)
-			_model.touchBlock(row, col);
+			_model.touchBlockUp(row, col);
+	}
+	
+	public void touchBlockDown(int row, int col)
+	{
+		if(_model.getState() == GameState.Playing)
+			_model.touchBlockDown(row, col);
 	}
 	
 	public void restartGame() 
