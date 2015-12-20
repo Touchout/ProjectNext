@@ -26,8 +26,8 @@ public class NumChaining extends Game
 				
 		//setScreen(new GameScreen(this));
 		//setScreen(new GameScreen(this));
-		//setScreen(new ArcadeGameScreen(this));
-		setScreen(_mainMenuScreen);
+		setScreen(new ArcadeGameScreen(this));
+		//setScreen(_mainMenuScreen);
 		//setScreen(new PlaygroundScreen(this));
 		//setScreen(new FBScreen(this));
 	}

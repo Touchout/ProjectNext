@@ -9,7 +9,7 @@ import com.touchout.game.mvc.core.Assets;
 
 public class ScoreBanner extends Actor 
 {
-	public TextureRegion backgroundTextureRegion;
+	//public TextureRegion backgroundTextureRegion;
 	public BitmapFont FontTitle = Assets.TimeTitleFont;
 	public BitmapFont Font = Assets.ScoreFont;
 	String Title = "SCORE";
@@ -20,11 +20,11 @@ public class ScoreBanner extends Actor
 	public ScoreBanner()
 	{
 		super();
-		backgroundTextureRegion = Assets.scoreBackgroundTexture;
-		setWidth(backgroundTextureRegion.getRegionWidth());
-		setHeight(backgroundTextureRegion.getRegionHeight());
-		//setWidth(200);
-		//setHeight(200);
+//		backgroundTextureRegion = Assets.scoreBackgroundTexture;
+//		setWidth(backgroundTextureRegion.getRegionWidth());
+//		setHeight(backgroundTextureRegion.getRegionHeight());
+		setWidth(100);
+		setHeight(100);
 		this.setOrigin(this.getWidth()/2, this.getHeight()/2);
 	}	
 	
@@ -49,16 +49,16 @@ public class ScoreBanner extends Actor
 	@Override
 	public void draw(Batch batch, float parentAlpha) 
 	{
-		batch.draw(backgroundTextureRegion
-				,this.getX()
-				,this.getY()
-				,this.getOriginX()
-				,this.getOriginY()
-				,this.getWidth()
-				,this.getHeight()
-				,this.getScaleX()
-				,this.getScaleY()
-				,this.getRotation());
+//		batch.draw(backgroundTextureRegion
+//				,this.getX()
+//				,this.getY()
+//				,this.getOriginX()
+//				,this.getOriginY()
+//				,this.getWidth()
+//				,this.getHeight()
+//				,this.getScaleX()
+//				,this.getScaleY()
+//				,this.getRotation());
 		
 		if(!Text.isEmpty())
 		{

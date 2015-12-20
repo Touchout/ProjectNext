@@ -35,13 +35,13 @@ public class TimeBannerActor extends Actor
 		float paddingX = (int) ((this.getWidth() - width) / 2);
 		float paddingY = (int) ((this.getHeight() + height) / 2);
 		titleCoordX = this.getX() + paddingX;
-		titleCoordY = this.getY() + 70;
+		titleCoordY = this.getY() + 150;
 		
 		layout.setText(Font, Text);
 		width = layout.width;
 		paddingX = (int) ((this.getWidth() - width) / 2);
 		timeCoordX = this.getX() + paddingX;
-		timeCoordY = this.getY() + 25;		
+		timeCoordY = this.getY() + 100;		
 	}
 	
 	@Override

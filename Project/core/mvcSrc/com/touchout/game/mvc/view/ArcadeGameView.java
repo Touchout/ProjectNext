@@ -1,10 +1,8 @@
 package com.touchout.game.mvc.view;
 
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -12,10 +10,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.Logger;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.sun.prism.GraphicsPipeline.ShaderType;
 import com.touchout.game.mvc.controller.ArcadeGameController;
 import com.touchout.game.mvc.core.Assets;
 import com.touchout.game.mvc.core.GlobalConfig;
@@ -24,11 +20,10 @@ import com.touchout.game.mvc.event.GameEventArg;
 import com.touchout.game.mvc.event.IGameEventHandler;
 import com.touchout.game.mvc.model.ArcadeGameModel;
 import com.touchout.game.mvc.model.ArcadeGameModel.GameState;
+import com.touchout.game.mvc.utility.LayoutHelper;
 import com.touchout.game.mvc.view.actor.NumBlockBase;
 import com.touchout.game.mvc.view.actor.ProgressBar;
-import com.touchout.game.mvc.view.actor.NumBlock;
 import com.touchout.game.mvc.view.actor.NumBoard;
-import com.touchout.game.mvc.view.actor.ResultPanel;
 import com.touchout.game.mvc.view.actor.ScoreBanner;
 import com.touchout.game.mvc.view.actor.TextActor;
 import com.touchout.game.mvc.view.actor.TextureRegionActor;
@@ -36,6 +31,8 @@ import com.touchout.game.mvc.view.actor.TimeBannerActor;
 
 public class ArcadeGameView implements IView
 {
+	private static final boolean enableDebugDraw = true;
+	
 	NumChaining _game;
 	ArcadeGameModel _model;
 	ArcadeGameController _controller;
@@ -52,7 +49,7 @@ public class ArcadeGameView implements IView
 	//TextActor _gameTimeCounter;
 	TextActor _comboCounter;
 	TextActor _score;
-	TextActor _plus;
+	TextActor _timeBounusNotifier;
 	ProgressBar _comboMeter; // ,_boostMeter;
 	//ResultPanel _resultPanel;
 	TimeBannerActor _timeBanner;
@@ -79,7 +76,7 @@ public class ArcadeGameView implements IView
 		_gameStage.addActor(_comboMeter);
 		//_gameStage.addActor(_boostMeter);
 		_gameStage.addActor(_scoreBanner);
-		_gameStage.addActor(_plus);
+		_gameStage.addActor(_timeBounusNotifier);
 		_gameStage.addActor(_restartBtn);
 		Gdx.input.setInputProcessor(_gameStage);
 		
@@ -121,20 +118,23 @@ public class ArcadeGameView implements IView
 		
 		//TimerNew
 		_timeBanner = new TimeBannerActor();
-		_timeBanner.setScale(2);
+		//_timeBanner.setScale(2);
+		_timeBanner.setSize(_timeBanner.getWidth()*2, _timeBanner.getHeight()*1.5f);
 		_timeBanner.setPosition((GlobalConfig.FRUSTUM_WIDTH - _timeBanner.getWidth())/2, 
 				GlobalConfig.FRUSTUM_HEIGHT - _timeBanner.getHeight());
 		_timeBanner.relayout();
-		
-		_plus = new TextActor(Assets.TimePlusFont, "+2 SECONDS", _timeBanner.getRight() , _timeBanner.getY());
-		_plus.setY(_plus.getY() - _plus.getHeight() - 5);
+				
+		//TimeBounusNotifier
+		_timeBounusNotifier = new TextActor(Assets.TimePlusFont, "+2 SECONDS", 0, _timeBanner.getY() - 10);
+		float centerX = (GlobalConfig.FRUSTUM_WIDTH - _timeBounusNotifier.getWidth())/2;
+		_timeBounusNotifier.setX(centerX);
 		//_plus.setVisible(false);
-		_plus.setVisible(true);
+		_timeBounusNotifier.setVisible(true);
 		
 		//ScoreBanner
 		_scoreBanner = new ScoreBanner();
-		_scoreBanner.setPosition((GlobalConfig.FRUSTUM_WIDTH - _scoreBanner.getWidth())/2, 0);
-		_scoreBanner.setScale(2.5f);
+		LayoutHelper.centerizeX(_scoreBanner, 0, _timeBanner.getX());
+		LayoutHelper.centerizeY(_scoreBanner, _timeBanner.getY(), _timeBanner.getTop());		
 		_scoreBanner.relayout();
 		
 		//ComboCounter
@@ -168,29 +168,6 @@ public class ArcadeGameView implements IView
 		_comboMeter.setCurrent(_model.getMetadata().getRemainComboTime());
 		_comboMeter.setShowUpperBound(true);
 		_comboMeter.setAlwaysShow(true);
-		
-//		_boostMeter = new ProgressBar(boostMeterPosX, boostMeterPosY, boostMeterWidth, boostMeterHeight);
-//		_boostMeter.setMax(_model.getMetadata().getComboBonusTarget());
-//		_boostMeter.setMin(0);
-//		_boostMeter.setCurrent(_model.getMetadata().getCcomboBonusCount());
-//		_boostMeter.setAlwaysShow(true);
-//		_boostMeter.setShowUpperBound(true);
-		
-//		_resultPanel = new ResultPanel();
-//		_resultPanel.getRestartButtonPressedEvent().addTEventHandler(new IGameEventHandler() {
-//			@Override
-//			public void handle(GameEventArg event) 
-//			{ 
-//				_controller.restartGame();
-//			}
-//		});		
-//		_resultPanel.getMainMenuButtonPressedEvent().addTEventHandler(new IGameEventHandler() {
-//			@Override
-//			public void handle(GameEventArg event) 
-//			{ 
-//				_controller.backToMainMenu();
-//			}
-//		});
 		
 		_board = new NumBoard(new Vector2(boardPosX, boardPosY), 
 				GlobalConfig.ROW_COUNT, 
@@ -310,16 +287,25 @@ public class ArcadeGameView implements IView
 				
 		//Draw gaming component (board...etc)
 		//_camera.update();	
-		ShapeRenderer sr = new ShapeRenderer();
-		sr.setProjectionMatrix(_gameStage.getCamera().combined);
-		sr.setAutoShapeType(true);
-		sr.begin();
-		_timeBanner.setDebug(true);
-		_timeBanner.drawDebug(sr);
-		sr.set(ShapeType.Line);
-		sr.setColor(Color.BLACK);
-		sr.line(0, _timeBanner.getY(), 1080, _timeBanner.getY());	
-		sr.end();
+
+		//Debug>>>>>>>>>>>>>>>>>>
+		if(enableDebugDraw)
+		{
+			ShapeRenderer sr = new ShapeRenderer();
+			sr.setProjectionMatrix(_gameStage.getCamera().combined);
+			sr.setAutoShapeType(true);
+			sr.begin();
+			_timeBanner.setDebug(true);
+			_timeBanner.drawDebug(sr);
+			_scoreBanner.setDebug(true);
+			_scoreBanner.drawDebug(sr);
+			sr.set(ShapeType.Line);
+			sr.setColor(Color.BLACK);
+			sr.line(0, _timeBanner.getY(), 1080, _timeBanner.getY());	
+			sr.end();
+		}
+		//<<<<<<<<<<<<<<<<<<<<<<<
+		
 		_gameStage.draw();
 		_gameStage.act();
 		
