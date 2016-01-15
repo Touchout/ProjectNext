@@ -23,6 +23,7 @@ public class Assets
 	public static TextureRegion[] NumBlockBackgroundTextures;
 	public static TextureRegion[] NumBlockBackgroundDarkTextures;
 	public static TextureRegion mainBackgroundTexture;
+	public static TextureRegion	mainBackgroundDarkTexture;
 	public static TextureRegion DarkButtonTexture;
 	public static TextureRegion LightButtonTexture;
 	public static TextureRegion timeBannerTexture;
@@ -65,7 +66,9 @@ public class Assets
 	public static void Load() 
 	{
 		//Load Textures
-		mainBackgroundTexture = LoadTexture("graphics/mainbg.png");
+		//mainBackgroundTexture = LoadTexture("graphics/mainbg.png");
+		mainBackgroundTexture = LoadTexture("graphics/main_background.png");
+		mainBackgroundDarkTexture = LoadTexture("graphics/main_background_dark.png");
 		DarkButtonTexture = LoadTexture("graphics/btn_primary.png");;
 		LightButtonTexture = LoadTexture("graphics/btn_secondary.png"); 
 		timeBannerTexture = LoadTexture("graphics/bg_small_dark.png");		
@@ -108,7 +111,6 @@ public class Assets
 		//Load Font		
 		FreeTypeFontGenerator fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Lato-Regular.ttf"));
 		FreeTypeFontParameter parameter = new FreeTypeFontParameter();	
-		parameter.characters = "0123456789LEV";
 		LevelFont = fontGenerator.generateFont(parameter);
 		LevelFont.setColor(COLOR_DARK);
 		parameter.size = 100;
@@ -165,7 +167,7 @@ public class Assets
 		parameter.characters = "0123456789";
 		FinalScoreFont = fontGenerator.generateFont(parameter);
 		FinalScoreFont.setColor(COLOR_ORAGE);
-		parameter.size = 30;
+		parameter.size = 50;
 		parameter.characters = "+2 SECONDS";
 		TimePlusFont = fontGenerator.generateFont(parameter);
 		TimePlusFont.setColor(COLOR_ORAGE);

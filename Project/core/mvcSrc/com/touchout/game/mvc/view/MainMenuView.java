@@ -3,9 +3,11 @@ package com.touchout.game.mvc.view;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.Logger;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -36,6 +38,7 @@ public class MainMenuView
 	//TextButton _startButton;
 	
 	TextureRegionActor _background;
+	TextureRegionActor _backgroundDark;
 	TextureRegionActor _startButton;
 	TextureRegionActor _highScoreButton;
 	TextActor _subTitle;
@@ -51,6 +54,7 @@ public class MainMenuView
 		//Set Stage
 		//_bgStage = new Stage(new StretchViewport(GlobalConfig.FRUSTUM_WIDTH, GlobalConfig.FRUSTUM_HEIGHT), _game.batch);
 		_bgStage = new Stage(new FillViewport(GlobalConfig.FRUSTUM_WIDTH, GlobalConfig.FRUSTUM_HEIGHT), _game.batch);
+		_bgStage.addActor(_backgroundDark);
 		_bgStage.addActor(_background);
 		
 		_mainStage = new Stage(new FitViewport(GlobalConfig.FRUSTUM_WIDTH, GlobalConfig.FRUSTUM_HEIGHT), _game.batch);
@@ -110,6 +114,9 @@ public class MainMenuView
 		_background = new TextureRegionActor(Assets.mainBackgroundTexture);
 		_background.setBounds(0, 0, GlobalConfig.FRUSTUM_WIDTH, GlobalConfig.FRUSTUM_HEIGHT);
 		
+		_backgroundDark = new TextureRegionActor(Assets.mainBackgroundDarkTexture);
+		_backgroundDark.setBounds(0, 0, GlobalConfig.FRUSTUM_WIDTH, GlobalConfig.FRUSTUM_HEIGHT);
+		_backgroundDark.setVisible(false);
 		
 		float titleCoordX, titleCoordY;
 		String subtitle = "tap button with right sequence";
@@ -132,8 +139,25 @@ public class MainMenuView
 			}
 			
 			@Override
-			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-				_controller.startArcadeGame();
+			public void touchUp(InputEvent event, float x, float y, int pointer, int button) 
+			{
+				_startButton.addAction(Actions.fadeOut(1.0f));
+				_highScoreButton.addAction(Actions.fadeOut(1.0f));
+				_subTitle.addAction(Actions.fadeOut(1.0f));
+				_background.addAction(Actions.fadeOut(1.0f));
+				_backgroundDark.addAction(Actions.sequence(
+						Actions.parallel(Actions.alpha(0), Actions.show()),
+						Actions.fadeIn(1.0f),
+						Actions.delay(1.0f),
+						new Action() 
+						{
+							@Override
+							public boolean act(float delta) 
+							{
+								_controller.startArcadeGame();
+								return true;
+							}
+						}));
 			}
 		});
 		
@@ -167,8 +191,11 @@ public class MainMenuView
 //		_game.batch.draw(Assets.mainBackgroundTexture,0,0);
 //		_game.batch.end();
 		
+		_bgStage.act();
 		_bgStage.getViewport().apply();
 		_bgStage.draw();
+		
+		_mainStage.act();
 		_mainStage.getViewport().apply();
 		_mainStage.draw();
 		

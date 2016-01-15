@@ -29,5 +29,5 @@ public class GlobalConfig
 	public static final float TIMER_VPOSITION = 1000;
 	
 	/**** Game Logic Parameters ****/
-	public static final int COMBO_TARGET = 10;
+	public static final int COMBO_TARGET = 3;
 }

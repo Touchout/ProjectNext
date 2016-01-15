@@ -17,6 +17,8 @@ public class ArcadeMetadata
 	private int _level;
 	private int _boardsClearCount;
 	private int _comboBonusTarget;
+	private boolean _justStart = true;
+	
 	public GameEvent timePlusEvent = new GameEvent();
 
 	public ArcadeMetadata()
@@ -32,11 +34,13 @@ public class ArcadeMetadata
 		_specPenaltyTime = 0.5f;
 		_boardsClearCount = 0;
 		_comboBonusTarget = GlobalConfig.COMBO_TARGET;
+		_justStart = true;
+		_level = 1;
+		_remianComboTimeSpec = 0.0f;
 		setPenaltyTime(0);
 		resetRemainComboTime();
 		clearComboCount();
 		clearComboBonusCount();
-		resetLevel();
 	}
 	
 	public void update(float delta) 
@@ -66,6 +70,15 @@ public class ArcadeMetadata
 	}
 	
 	//******************** Getters & Setters  ********************//
+	public void InformStarted() 
+	{
+		if(_justStart)
+		{
+			_remianComboTimeSpec = 1.0f;
+			_justStart = false;
+			resetRemainComboTime();
+		}
+	}
 	
 	public int getCcomboBonusCount() {
 		return _comboBonusCount;

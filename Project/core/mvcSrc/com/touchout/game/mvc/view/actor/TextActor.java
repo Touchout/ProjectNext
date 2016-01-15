@@ -50,6 +50,32 @@ public class TextActor extends Actor
 	@Override
 	public void draw(Batch batch, float parentAlpha) 
 	{
-		_font.draw(batch, _text, getX(), getY());
+		float x, y;
+		
+		if(getScaleX() != 1)
+		{
+			x = getX() - (getScaleX()-1) * getWidth() / 2;
+		}
+		else
+		{
+			x = getX();
+		}
+		
+		if(getScaleY() != 1)
+		{
+			y = getY() + (getScaleY()-1) * getHeight() / 2;
+		}
+		else 
+		{
+			y = getY();
+		}
+		
+		_font.getData().setScale(getScaleX(), getScaleY());
+		//_font.getData().
+		_font.setColor(_font.getColor().r, _font.getColor().g, _font.getColor().b, getColor().a);
+		_font.draw(batch, _text, x, y);
 	}
+	
+	
+	
 }

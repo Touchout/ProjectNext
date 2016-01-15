@@ -1,6 +1,7 @@
 package com.touchout.game.mvc.model;
 
 import com.badlogic.gdx.math.MathUtils;
+import com.touchout.game.mvc.core.GlobalConfig;
 
 public class NumBoardEntity 
 {
@@ -95,6 +96,20 @@ public class NumBoardEntity
 				_cells[rowToSwap][colToSwap].Number = _cells[row][col].Number;
 				_cells[row][col].Number = temp;
 				_cells[row][col].BgNumber = MathUtils.random(3);
+				
+				//>>>>>>>>>>>>>>>>Block Coloring(Not finished yet)
+//				boolean coloringDone = true;
+//				do 
+//				{
+//					int sameTimes = 0;
+//					_cells[row][col].BgNumber = MathUtils.random(3);
+//					if(row>0) if(_cells[row][col].BgNumber == _cells[row-1][col].BgNumber) sameTimes++;
+//					if(row<GlobalConfig.ROW_COUNT-1) if(_cells[row][col].BgNumber == _cells[row+1][col].BgNumber) sameTimes++;
+//					if(col>0) if(_cells[row][col].BgNumber == _cells[row][col-1].BgNumber) sameTimes++;
+//					if(col<GlobalConfig.COLUMN_COUNT-1) if(_cells[row][col].BgNumber == _cells[row][col+1].BgNumber) sameTimes++;
+//					if(sameTimes >= 2) coloringDone = false;
+//				} while (!coloringDone);
+				//<<<<<<<<<<<<<<<<Block Coloring
 			}
 		});
 	}

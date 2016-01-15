@@ -37,6 +37,7 @@ public class TextureRegionActor extends Actor
 	@Override
 	public void draw(Batch batch, float parentAlpha) 
 	{
+		batch.setColor(getColor().r, getColor().g, getColor().b, getColor().a); 
 		batch.draw(ContenTextureRegion
 				,this.getX()
 				,this.getY()
@@ -51,6 +52,7 @@ public class TextureRegionActor extends Actor
 		if(!Text.isEmpty())
 		{
 			Vector2 numCoord = getTextCoord();
+			Font.setColor(Font.getColor().r, Font.getColor().g, Font.getColor().b, getColor().a);
 			Font.draw(batch, Text, numCoord.x, numCoord.y);
 		}
 	}

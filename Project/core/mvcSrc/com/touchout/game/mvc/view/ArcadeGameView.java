@@ -6,10 +6,13 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.Logger;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.touchout.game.mvc.controller.ArcadeGameController;
@@ -31,7 +34,8 @@ import com.touchout.game.mvc.view.actor.TimeBannerActor;
 
 public class ArcadeGameView implements IView
 {
-	private static final boolean enableDebugDraw = true;
+	//private static final boolean enableDebugDraw = true;
+	private static final boolean enableDebugDraw = false;
 	
 	NumChaining _game;
 	ArcadeGameModel _model;
@@ -95,7 +99,7 @@ public class ArcadeGameView implements IView
 		//_camera.setToOrtho(false, Config.FRUSTUM_WIDTH, Config.FRUSTUM_HEIGHT);
 		
 		//Set logger
-		logger.setLevel(Logger.DEBUG);
+		//logger.setLevel(Logger.DEBUG);
 	}
 	
 	private void initializeActors() 
@@ -125,11 +129,10 @@ public class ArcadeGameView implements IView
 		_timeBanner.relayout();
 				
 		//TimeBounusNotifier
-		_timeBounusNotifier = new TextActor(Assets.TimePlusFont, "+2 SECONDS", 0, _timeBanner.getY() - 10);
+		_timeBounusNotifier = new TextActor(Assets.TimePlusFont, "+2 SECONDS", 0, _timeBanner.getY() - 25);
 		float centerX = (GlobalConfig.FRUSTUM_WIDTH - _timeBounusNotifier.getWidth())/2;
 		_timeBounusNotifier.setX(centerX);
-		//_plus.setVisible(false);
-		_timeBounusNotifier.setVisible(true);
+		_timeBounusNotifier.setVisible(false);
 		
 		//ScoreBanner
 		_scoreBanner = new ScoreBanner();
@@ -241,7 +244,13 @@ public class ArcadeGameView implements IView
 		_model.getMetadata().timePlusEvent.addTEventHandler(new IGameEventHandler() {			
 			@Override
 			public void handle(GameEventArg event) {
-				//_plus.addAction(Actions.sequence(Actions.visible(true), Actions.delay(0.5f),Actions.visible(false)));
+				_timeBounusNotifier.addAction(Actions.sequence(
+						Actions.scaleTo(0.1f, 0.1f),
+						Actions.visible(true),
+						Actions.scaleTo(1.2f, 1.2f, 0.1f, Interpolation.linear),
+						Actions.scaleTo(1f, 1f, 0.15f, Interpolation.linear),
+						Actions.delay(0.5f),
+						Actions.visible(false)));
 			}
 		});
 	}
@@ -274,6 +283,7 @@ public class ArcadeGameView implements IView
 		_timeBanner.Text = _model.getMetadata().getGameTimeString();
 		_scoreBanner.Text = _model.getMetadata().getScoreString();
 		_comboCounter.setText(String.format("%3d COMBOS",_model.getMetadata().getComboCount()));
+		_comboMeter.setMax(_model.getMetadata().getRemianComboTimeSpec());
 		_comboMeter.setCurrent(_model.getMetadata().getRemainComboTime());
 		_comboMeter.setScaleFactor((_model.getMetadata().getCcomboBonusCount()+1)/10f);
 		//_boostMeter.setCurrent(_model.getMetadata().getCcomboBonusCount() % _model.getMetadata().getComboBonusTarget());

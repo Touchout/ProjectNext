@@ -81,6 +81,8 @@ public class ArcadeGameModel
 	
 	public void touchBlockUp(int row, int col) 
 	{
+		_metadata.InformStarted();
+		
 		//Press on correct block
 		if(_boardEntity.getCells()[row][col].Number == _targetNumber)
 		{
