@@ -17,6 +17,8 @@ import com.touchout.game.mvc.core.Assets;
 import com.touchout.game.mvc.core.GlobalConfig;
 import com.touchout.game.mvc.core.NumChaining;
 import com.touchout.game.mvc.model.MainMenuModel;
+import com.touchout.game.mvc.utility.LayoutHelper;
+import com.touchout.game.mvc.utility.UtilActions;
 import com.touchout.game.mvc.view.actor.TextActor;
 import com.touchout.game.mvc.view.actor.TextureRegionActor;
 
@@ -42,6 +44,7 @@ public class MainMenuView
 	TextureRegionActor _startButton;
 	TextureRegionActor _highScoreButton;
 	TextActor _subTitle;
+	TextActor _countdown;
 	
 	public MainMenuView(MainMenuModel model, MainMenuController controller)
 	{
@@ -63,6 +66,7 @@ public class MainMenuView
 		_mainStage.addActor(_startButton);
 		_mainStage.addActor(_highScoreButton);
 		_mainStage.addActor(_subTitle);
+		_mainStage.addActor(_countdown);
 		
 		Gdx.input.setInputProcessor(_mainStage);
 			
@@ -70,7 +74,18 @@ public class MainMenuView
 		logger.setLevel(Logger.DEBUG);
 	}
 	
-	public void reset() {
+	public void reset() 
+	{
+		_startButton.addAction(Actions.alpha(1));
+		_highScoreButton.addAction(Actions.alpha(1));
+		_subTitle.addAction(Actions.alpha(1));
+		_background.addAction(Actions.alpha(1));
+		_backgroundDark.addAction(Actions.alpha(0));
+		
+		_countdown.setText("3");
+		_countdown.setVisible(false);
+		LayoutHelper.centerizeX(_countdown, 0, GlobalConfig.FRUSTUM_WIDTH);
+		
 		Gdx.input.setInputProcessor(_mainStage);
 	}
 	
@@ -126,6 +141,11 @@ public class MainMenuView
 		titleCoordY = 680;
 		_subTitle = new TextActor(Assets.SubTitleFont, subtitle, titleCoordX, titleCoordY);
 		
+		_countdown = new TextActor(Assets.CountdownFont, "3", 0, 500);
+		_countdown.setVisible(false);
+		LayoutHelper.centerizeX(_countdown, 0, GlobalConfig.FRUSTUM_WIDTH);
+		 
+		
 		_startButton = new TextureRegionActor(Assets.DarkButtonTexture);
 		float buttonPadding = (GlobalConfig.FRUSTUM_WIDTH - _startButton.getWidth())/2;
 		_startButton.setPosition(buttonPadding , 400);
@@ -141,6 +161,8 @@ public class MainMenuView
 			@Override
 			public void touchUp(InputEvent event, float x, float y, int pointer, int button) 
 			{
+				Gdx.input.setInputProcessor(null);
+				
 				_startButton.addAction(Actions.fadeOut(1.0f));
 				_highScoreButton.addAction(Actions.fadeOut(1.0f));
 				_subTitle.addAction(Actions.fadeOut(1.0f));
@@ -148,7 +170,7 @@ public class MainMenuView
 				_backgroundDark.addAction(Actions.sequence(
 						Actions.parallel(Actions.alpha(0), Actions.show()),
 						Actions.fadeIn(1.0f),
-						Actions.delay(1.0f),
+						Actions.delay(3.0f),
 						new Action() 
 						{
 							@Override
@@ -158,6 +180,18 @@ public class MainMenuView
 								return true;
 							}
 						}));
+				
+				_countdown.addAction(Actions.sequence(
+						Actions.parallel(Actions.alpha(0), Actions.show()),
+						Actions.fadeIn(1.0f),
+						_countdown.SetTextAction("2"), 
+						Actions.delay(1),
+						_countdown.SetTextAction("1"),
+						Actions.delay(1),
+						Actions.parallel(
+							_countdown.SetTextAction("Go !"),
+							UtilActions.CenteralizeAction(0, GlobalConfig.FRUSTUM_WIDTH)),
+						Actions.delay(1)));
 			}
 		});
 		

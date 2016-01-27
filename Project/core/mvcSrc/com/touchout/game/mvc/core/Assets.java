@@ -50,6 +50,7 @@ public class Assets
 	public static BitmapFont MainMenuButtonFontDark;
 	public static BitmapFont FinalScoreFont;
 	public static BitmapFont TimePlusFont;
+	public static BitmapFont CountdownFont;
 	
 	public static Color COLOR_DARK = new Color(0x0A132AFF);
 	public static Color COLOR_GRAY = new Color(0xCCCCCCFF);
@@ -171,7 +172,9 @@ public class Assets
 		parameter.characters = "+2 SECONDS";
 		TimePlusFont = fontGenerator.generateFont(parameter);
 		TimePlusFont.setColor(COLOR_ORAGE);
-		
+		parameter.size = 150;
+		parameter.characters = "321Go!";
+		CountdownFont = fontGenerator.generateFont(parameter);
 		fontGenerator.dispose();
 		
 		fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Lato-Italic.ttf"));

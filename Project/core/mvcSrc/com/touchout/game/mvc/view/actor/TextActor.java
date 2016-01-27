@@ -3,7 +3,9 @@ package com.touchout.game.mvc.view.actor;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.touchout.game.mvc.utility.LayoutHelper;
 
 public class TextActor extends Actor 
 {
@@ -45,6 +47,19 @@ public class TextActor extends Actor
 		setX(x);
 		setY(y);
 		recalculate();
+	}
+	
+	public Action SetTextAction(final String text) 
+	{
+		return new Action() 
+		{
+			@Override
+			public boolean act(float delta) 
+			{
+				setText(text);
+				return true;
+			}
+		};		
 	}
 	
 	@Override
