@@ -34,6 +34,11 @@ public class TextureRegionActor extends Actor
 		return new Vector2(this.getX() + paddingX, this.getY() + paddingY);
 	}
 	
+	public void enlarge(float scale)
+	{
+		setSize(getWidth()*scale, getHeight()*scale);
+	}
+	
 	@Override
 	public void draw(Batch batch, float parentAlpha) 
 	{

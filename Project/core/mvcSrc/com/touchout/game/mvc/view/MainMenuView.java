@@ -170,7 +170,7 @@ public class MainMenuView
 				_backgroundDark.addAction(Actions.sequence(
 						Actions.parallel(Actions.alpha(0), Actions.show()),
 						Actions.fadeIn(1.0f),
-						Actions.delay(3.0f),
+						Actions.delay(3f),
 						new Action() 
 						{
 							@Override

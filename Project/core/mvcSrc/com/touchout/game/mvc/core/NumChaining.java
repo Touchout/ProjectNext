@@ -4,7 +4,6 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Logger;
 import com.touchout.game.test.ArcadeGameScreen;
-import com.touchout.game.test.FBScreen;
 import com.touchout.game.test.MainMenuScreen;
 
 public class NumChaining extends Game 
